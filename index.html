@@ -1,0 +1,1075 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3D设计师作品集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f5f5f7',
+                        secondary: '#1d1d1f',
+                        accent: '#0071e3',
+                        neutral: {
+                            100: '#f5f5f7',
+                            200: '#e5e5ea',
+                            300: '#d1d1d6',
+                            400: '#c7c7cc',
+                            500: '#aeaeb2',
+                            600: '#86868b',
+                            700: '#636366',
+                            800: '#48484a',
+                            900: '#3a3a3c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .text-balance {
+                text-wrap: balance;
+            }
+            .glass-effect {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .hover-scale {
+                transition: transform 0.3s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.02);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .progress-bar {
+                height: 2px;
+                background: linear-gradient(90deg, #0071e3 0%, #5e35b1 100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 50;
+                transition: width 0.1s ease;
+            }
+        }
+    </style>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica Neue, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            background-image: url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bbd67abd05b3492aae47dbc6044ff8d8~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260207123031A689A67B9DC74813F19D&rrcfp=f06b921b&x-expires=1773030642&x-signature=lOTyMNV1%2BoyTPq%2Bw5wDkBAC0NcQ%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            animation: backgroundFloat 60s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFloat {
+            0% {
+                background-position: 50% 50%;
+                background-size: 110% 110%;
+            }
+            25% {
+                background-position: 55% 45%;
+                background-size: 115% 115%;
+            }
+            50% {
+                background-position: 50% 50%;
+                background-size: 110% 110%;
+            }
+            75% {
+                background-position: 45% 55%;
+                background-size: 115% 115%;
+            }
+            100% {
+                background-position: 50% 50%;
+                background-size: 110% 110%;
+            }
+        }
+        
+        .portfolio-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .portfolio-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .portfolio-image {
+            opacity: 0;
+            transition: opacity 1s ease 0.3s;
+        }
+        
+        .portfolio-item.visible .portfolio-image {
+            opacity: 1;
+        }
+        
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(0, 113, 227, 0.5);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 113, 227, 0.3);
+        }
+        
+        .module-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .module {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+        }
+        
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-primary:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            z-index: 40;
+        }
+        
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    
+    <!-- Header -->
+    <header class="header-fixed py-6 px-8 md:px-16 transition-all duration-300" id="header">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-semibold tracking-tight text-neutral-900">
+                <span class="text-accent">3D</span>视界
+            </a>
+            
+            <nav class="hidden md:flex space-x-12">
+                <a href="#portfolio" class="text-neutral-700 hover:text-accent transition-colors duration-300">作品集</a>
+                <a href="#about" class="text-neutral-700 hover:text-accent transition-colors duration-300">关于</a>
+                <a href="#contact" class="text-neutral-700 hover:text-accent transition-colors duration-300">联系</a>
+            </nav>
+            
+            <button class="md:hidden text-neutral-900 focus:outline-none" id="menuToggle">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden bg-white absolute top-full left-0 w-full py-4 px-8 shadow-lg transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none" id="mobileMenu">
+            <nav class="flex flex-col space-y-4">
+                <a href="#portfolio" class="text-neutral-700 hover:text-accent transition-colors duration-300 py-2">作品集</a>
+                <a href="#about" class="text-neutral-700 hover:text-accent transition-colors duration-300 py-2">关于</a>
+                <a href="#contact" class="text-neutral-700 hover:text-accent transition-colors duration-300 py-2">联系</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-4 md:px-16 pt-16 pb-10">
+        <div class="container mx-auto px-4">
+            <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl p-6 md:p-12 shadow-xl w-full">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-24">
+                    <!-- Personal Info -->
+                    <div class="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
+                        <div class="relative mb-8">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-accent to-purple-600 rounded-full blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                            <div class="relative w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                                <img src="images/toux.jpg" alt="设计师头像" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight text-neutral-900 animate-fade-in">
+                            周时鹏 <span class="text-accent">Zhou</span>
+                        </h1>
+                        <p class="text-lg sm:text-xl md:text-2xl text-neutral-600 mb-6 animate-slide-up" style="animation-delay: 0.2s;">
+                            电商三维设计师 &amp; 创意设计师
+                        </p>
+                        <div class="space-y-3 text-left max-w-md mx-auto md:mx-0">
+                            <div class="flex items-center gap-3">
+                                <i class="fa fa-graduation-cap text-accent w-5 text-center"></i>
+                                <span class="text-neutral-700">广西职业技术学院 | 数字媒体艺术</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa fa-briefcase text-accent w-5 text-center"></i>
+                                <span class="text-neutral-700">近一年电商美术工作经验</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa fa-map-marker text-accent w-5 text-center"></i>
+                                <span class="text-neutral-700">广东   广州</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Introduction -->
+                    <div class="w-full md:w-1/2">
+                        <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-neutral-900 animate-fade-in">
+                            打造 <span class="text-accent">3D</span> 体验
+                        </h2>
+                        <p class="text-base sm:text-xl md:text-2xl text-neutral-600 mb-6 text-balance animate-slide-up" style="animation-delay: 0.2s;">
+                            通过沉浸式三维体验探索数字艺术与设计的边界
+                        </p>
+                        <p class="text-sm sm:text-lg text-neutral-700 mb-8 animate-slide-up" style="animation-delay: 0.3s;">
+                            专注于电子商务三维美术设计和商业可视化领域，擅长将创意概念转化为令人惊叹的3D视觉体验。
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#portfolio" class="btn-primary inline-block bg-accent text-white font-medium py-2.5 px-6 rounded-full hover:bg-opacity-90 transition-all duration-300 hover-lift text-sm sm:text-base">
+                                <span>查看作品集</span>
+                            </a>
+                            <a href="#contact" class="inline-block bg-white text-neutral-900 font-medium py-2.5 px-6 rounded-full border border-neutral-300 hover:border-accent hover:text-accent transition-all duration-300 hover-lift text-sm sm:text-base">
+                                联系我
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resume Section -->
+    <section class="py-24 px-8 md:px-16 bg-white bg-opacity-70 backdrop-blur-sm">
+        <div class="container mx-auto">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight text-neutral-900">                           工作经历     </h2>
+            
+            <div class="max-w-4xl mx-auto bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl p-8 shadow-xl">
+                <!-- Timeline -->
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-neutral-300"></div>
+                    <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-3 bg-accent opacity-10 rounded-full"></div>
+                    
+                    <!-- Timeline Items -->
+                    <div class="space-y-12">
+                        <!-- Item 1 -->
+                        <div class="relative flex flex-col md:flex-row items-center">
+
+                            <div class="ml-10 md:ml-0 md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                                <h3 class="text-xl font-bold text-neutral-900 mb-2">
+</h3>
+                                <h4 class="text-lg font-medium text-accent mb-2">2024.06 广州铂楠恒</h4>
+                                <p class="text-neutral-600 mb-2">
+</p>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12 flex flex-col justify-start">
+                                <p class="text-neutral-700">
+                                    负责公司四家网店约10个品类的电商视觉包装效果图，主导月度主图/海报更迭。并独立制作三种导轨，室内的展示动画。
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 3 -->
+                        <div class="relative flex flex-col md:flex-row items-center">
+                            <div class="ml-10 md:ml-0 md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                                <h3 class="text-xl font-bold text-neutral-900 mb-2"></h3>
+                                <h4 class="text-lg font-medium text-accent mb-2">2024.09 广州铂楠恒</h4>
+                                <p class="text-neutral-600 mb-2">
+</p>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12 flex flex-col justify-start">
+                                <p class="text-neutral-700">
+                                    负责多个重要项目的3D视觉设计项目，与美术设计团队共同完成从概念到成品的全流程，获得企业高层高度认可。
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 2 -->
+                        
+                        <!-- Item 4 -->
+                        <div class="relative flex flex-col md:flex-row items-center">
+
+                            <div class="ml-10 md:ml-0 md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                                <h3 class="text-xl font-bold text-neutral-900 mb-2">
+</h3>
+                                <h4 class="text-lg font-medium text-accent mb-2">2025.01 广州伯楠恒</h4>
+                                <p class="text-neutral-600 mb-2">
+</p>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12 flex flex-col justify-start">
+                                <p class="text-neutral-700">与公司高层推动AI辅助作图流程，接入Stable Diffusion辅助工作。释放更多人力，并用于创意工作</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 px-8 md:px-16 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight text-neutral-900">精选作品</h2>
+            
+            <!-- Portfolio Modules -->
+            <div class="relative">
+                <!-- Navigation Arrows -->
+                <button id="prevBtn" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-accent text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl z-10 focus:outline-none hover:bg-opacity-90 transition-all duration-300 md:-left-8 hover:scale-110">
+                    <i class="fa fa-chevron-left text-2xl"></i>
+                </button>
+                <button id="nextBtn" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-accent text-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl z-10 focus:outline-none hover:bg-opacity-90 transition-all duration-300 md:-right-8 hover:scale-110">
+                    <i class="fa fa-chevron-right text-2xl"></i>
+                </button>
+                
+                <div class="module-container overflow-x-auto scrollbar-hide pb-12 -mx-4 md:-mx-16 px-4 md:px-16">
+                    <div class="flex space-x-8 min-w-max justify-center" id="portfolioSlider">
+                    <!-- Module 1: Abstract Geometries -->
+                    <a href="project3.html" class="module w-[calc(100vw-2rem)] sm:w-[calc(90vw-2rem)] md:w-[80vw] lg:w-[60vw] portfolio-item mx-auto block cursor-pointer">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover-lift glass-effect h-full">
+                            <div class="w-full h-64 md:h-80 relative overflow-hidden">
+                                <img src="images/gril.png" alt="Abstract Geometries" class="portfolio-image w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            </div>
+                            <div class="p-6 sm:p-8 md:p-12 glass-effect bg-white bg-opacity-40">
+                                <span class="inline-block bg-accent bg-opacity-10 text-accent text-sm font-medium py-1 px-3 rounded-full mb-4">吹风机</span>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight text-neutral-900">智能便携吹风筒</h3>
+                                <p class="text-neutral-600 mb-8 max-w-2xl">通过C4D+Octane的强大渲染能力气，打造出全新的吹风筒品牌，并运用AI图像生成技术，对部分图片进行创意制作</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Cinema 4D</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Octane 渲染</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">程序化纹理</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Module 2: Liquid Sculptures -->
+                    <a href="project2.html" class="module w-[calc(100vw-2rem)] sm:w-[calc(90vw-2rem)] md:w-[80vw] lg:w-[60vw] portfolio-item mx-auto block cursor-pointer">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover-lift glass-effect h-full">
+                            <div class="w-full h-64 md:h-80 relative overflow-hidden">
+                                <img src="images/230000.png" alt="Liquid Sculptures" class="portfolio-image w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            </div>
+                            <div class="p-6 sm:p-8 md:p-12 glass-effect bg-white bg-opacity-40">
+                                <span class="inline-block bg-accent bg-opacity-10 text-accent text-sm font-medium py-1 px-3 rounded-full mb-4">次表面散射</span>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight text-neutral-900">无刺激面霜</h3>
+                                <p class="text-neutral-600 mb-8 max-w-2xl">
+                                    一项将次表面散射精准表达的项目，在使用了SSS材质进行渲染后，使用AI图像处理技术添加背景植物。
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Cinema 4D</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">流体模拟</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Substance Painter</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Module 3: Architectural Visions -->
+                    <a href="project1.html" class="module w-[calc(100vw-2rem)] sm:w-[calc(90vw-2rem)] md:w-[80vw] lg:w-[60vw] portfolio-item mx-auto block cursor-pointer">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover-lift glass-effect h-full">
+                            <div class="w-full h-64 md:h-80 relative overflow-hidden">
+                                <img src="images/golden_flow_0000.png" alt="Architectural Visions" class="portfolio-image w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            </div>
+                            <div class="p-6 sm:p-8 md:p-12 glass-effect bg-white bg-opacity-40">
+                                <span class="inline-block bg-accent bg-opacity-10 text-accent text-sm font-medium py-1 px-3 rounded-full mb-4">练习作品</span>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight text-neutral-900">练习作品</h3>
+                                <p class="text-neutral-600 mb-8 max-w-2xl">
+                                    这里是我的练习作品，是我尝试多风格的，最好的学习成果，对于为了掌握多风格渲染，提高自我提供坚实保障。
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Cinema 4D</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Octane</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Photoshop</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Module 4: Smart Home Control -->
+                    <a href="project4.html" class="module w-[calc(100vw-2rem)] sm:w-[calc(90vw-2rem)] md:w-[80vw] lg:w-[60vw] portfolio-item mx-auto block cursor-pointer">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover-lift glass-effect h-full">
+                            <div class="w-full h-64 md:h-80 relative overflow-hidden">
+                                <img src="images/NUB20000.png" alt="Smart Home Control" class="portfolio-image w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            </div>
+                            <div class="p-6 sm:p-8 md:p-12 glass-effect bg-white bg-opacity-40">
+                                <span class="inline-block bg-accent bg-opacity-10 text-accent text-sm font-medium py-1 px-3 rounded-full mb-4">智能家居</span>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight text-neutral-900">AI智能数据线</h3>
+                                <p class="text-neutral-600 mb-8 max-w-2xl">
+                                    
+
+                                    一款极简主义风格的AI智能数据线banner设计，通过Cinema 4D和Octane渲染，展现极具特色的Banner详情。
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Cinema 4D</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Octane 渲染</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">产品设计</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Module 5: VR Headset -->
+                    <a href="project5.html" class="module w-[calc(100vw-2rem)] sm:w-[calc(90vw-2rem)] md:w-[80vw] lg:w-[60vw] portfolio-item mx-auto block cursor-pointer">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover-lift glass-effect h-full">
+                            <div class="w-full h-64 md:h-80 relative overflow-hidden">
+                                <img src="images/tuy0135.png" alt="未来VR头显" class="portfolio-image w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            </div>
+                            <div class="p-6 sm:p-8 md:p-12 glass-effect bg-white bg-opacity-40">
+                                <span class="inline-block bg-accent bg-opacity-10 text-accent text-sm font-medium py-1 px-3 rounded-full mb-4">虚拟现实</span>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-4 tracking-tight text-neutral-900">美妆动画</h3>
+                                <p class="text-neutral-600 mb-8 max-w-2xl">
+                                    这是一条自制的美妆动画，通过清新透亮的透射材质，展现出美妆的高端风格。
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Cinema 4D</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">Octane 渲染</span>
+                                    <span class="text-xs font-medium text-neutral-500 bg-neutral-200 py-1 px-3 rounded-full">概念设计</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-24 px-8 md:px-16 bg-neutral-100">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 tracking-tight text-neutral-900">关于我的三维设计</h2>
+                    <p class="text-neutral-600 mb-6 text-base sm:text-lg">
+                        这份作品集是我近一年实习成果的结晶。期间，我系统掌握了Octane Render、Stable Diffusion、Keyshot等多款软件，并能快速学习和应用最新的AI大模型，显著提升了工作效率与作品质量。
+                    </p>
+                    <p class="text-neutral-600 mb-6 text-base sm:text-lg">
+                        未来，我计划向个人CG领域深耕，重点学习MD衣物制作、Houdini流体模拟、Zbrush雕刻等高级技术，以不断提升自己的专业水准，为客户创造更具感染力的视觉体验。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-4 shadow-sm hover-lift">
+                            <h4 class="text-3xl font-bold text-neutral-900 mb-1">1+</h4>
+                            <p class="text-neutral-500">年经验</p>
+                        </div>
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-4 shadow-sm hover-lift">
+                            <h4 class="text-3xl font-bold text-neutral-900 mb-1">20+</h4>
+                            <p class="text-neutral-500">完成项目</p>
+                        </div>
+                        <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-4 shadow-sm hover-lift">
+                            <h4 class="text-3xl font-bold text-neutral-900 mb-1">3+</h4>
+                            <p class="text-neutral-500">专业证书</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section class="py-24 px-8 md:px-16 bg-white bg-opacity-80 backdrop-blur-sm">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center tracking-tight text-neutral-900">专业技能</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skill 1 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-cube text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">3D建模</h3>
+                    <p class="text-neutral-600">
+                        为各种应用创建详细且优化的3D模型，从角色到环境和产品。
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">95%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill 2 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-paint-brush text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">纹理与材质</h3>
+                    <p class="text-neutral-600">
+                        创建逼真且风格化的纹理，为3D模型带来深度和细节，使其栩栩如生。
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">90%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill 3 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-lightbulb-o text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">灯光与渲染</h3>
+                    <p class="text-neutral-600">
+                        设置逼真的光照场景，并为各种平台和目的优化渲染效果。
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">92%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill 4 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-film text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">动画</h3>
+                    <p class="text-neutral-600">
+                        创建流畅的动画和动态图形，增强叙事性和用户参与度。
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">85%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill 5 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-vr-cardboard text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">艺术创作体验</h3>
+                    <p class="text-neutral-600">
+                        为各种平台和目的高级的图片项目，为企业注入更多的创新活力。
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">80%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill 6 -->
+                <div class="bg-white bg-opacity-40 backdrop-blur-lg rounded-xl p-8 shadow-sm hover-lift">
+                    <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa fa-code text-accent text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 tracking-tight text-neutral-900">人像精修</h3>
+                    <p class="text-neutral-600">
+                        精通Photo Shop人像精修，包括液化，磨皮等常规人像精修技术。 
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span class="text-neutral-700">熟练度</span>
+                            <span class="text-accent">88%</span>
+                        </div>
+                        <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div class="bg-accent h-2 rounded-full" style="width: 88%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-8 md:px-16 bg-neutral-900 text-white">
+        <div class="container mx-auto">
+            <div class="max-w-3xl mx-auto text-center mb-16 bg-white bg-opacity-40 backdrop-blur-lg rounded-2xl p-8 shadow-xl">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 tracking-tight">让我们共创精彩</h2>
+                <p class="text-neutral-300 text-lg">
+                    我始终乐于讨论新项目、创意想法或参与您愿景的机会。
+                </p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6 bg-neutral-800 bg-opacity-40 backdrop-blur-lg rounded-xl hover-lift">
+                        <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-envelope text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-medium mb-2">邮箱</h3>
+                        <a href="mailto:contact@3dvision.com" class="text-accent hover:underline">jiehe870692@163.com</a>
+                    </div>
+                    <div class="p-6 bg-neutral-800 bg-opacity-40 backdrop-blur-lg rounded-xl hover-lift">
+                        <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-map-marker text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-medium mb-2">位置</h3>
+                        <p class="text-neutral-300">广东 广州</p>
+                    </div>
+                    <div class="p-6 bg-neutral-800 bg-opacity-40 backdrop-blur-lg rounded-xl hover-lift">
+                        <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-phone text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-medium mb-2">电话</h3>
+                        <a href="tel:+14155551234" class="text-accent hover:underline">Number：19977987483</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-8 md:px-16 bg-neutral-900 text-neutral-400 border-t border-neutral-800">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-semibold tracking-tight text-white">
+                        <span class="text-accent">3D</span>视界
+                    </a>
+                    <p class="mt-2 text-sm">© 2025 3D视界。保留所有权利。</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-neutral-400 hover:text-accent transition-colors duration-300">
+                        <i class="fa fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-accent transition-colors duration-300">
+                        <i class="fa fa-behance text-xl"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-accent transition-colors duration-300">
+                        <i class="fa fa-dribbble text-xl"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-accent transition-colors duration-300">
+                        <i class="fa fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-accent transition-colors duration-300">
+                        <i class="fa fa-artstation text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-accent text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover-lift">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+    
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('customCursor');
+        const cursorHoverElements = document.querySelectorAll('a, button, .hover-lift, .hover-scale');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+        
+        cursorHoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+        
+        // Hide cursor when leaving the window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+        
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('-translate-y-full')) {
+                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                menuToggle.innerHTML = '<i class="fa fa-times text-xl"></i>';
+            } else {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                menuToggle.innerHTML = '<i class="fa fa-bars text-xl"></i>';
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                menuToggle.innerHTML = '<i class="fa fa-bars text-xl"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+        
+        // Scroll progress bar
+        const progressBar = document.getElementById('progressBar');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = `${scrollPercent}%`;
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Intersection Observer for portfolio items
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        portfolioItems.forEach(item => {
+            observer.observe(item);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.getElementById('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Touch and drag support for horizontal scrolling
+        const moduleContainers = document.querySelectorAll('.module-container');
+        
+        moduleContainers.forEach(container => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                container.classList.add('cursor-grabbing');
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.classList.remove('cursor-grabbing');
+            });
+            
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.classList.remove('cursor-grabbing');
+            });
+            
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll speed
+                container.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Touch events for mobile
+            container.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+            
+            container.addEventListener('touchmove', (e) => {
+                const x = e.touches[0].pageX - container.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll speed
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
+        
+        // 表单提交功能已移除
+        
+        // Portfolio slider navigation with centered cards
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slider = document.getElementById('portfolioSlider');
+        const modules = document.querySelectorAll('.module');
+        const container = slider.parentElement;
+        
+        let currentIndex = 0;
+        let isTransitioning = false;
+        let autoSlideInterval;
+        let isAutoSlideEnabled = true; // Enable auto slide by default
+        
+        // Update slider position to center the current card
+        function updateSlider(animate = true) {
+            if (modules.length === 0) return;
+            
+            // Prevent multiple transitions at once
+            if (isTransitioning) return;
+            
+            const moduleWidth = modules[0].offsetWidth;
+            const containerWidth = container.offsetWidth;
+            const gap = 32; // Space between modules
+            
+            // Calculate center position
+            const centerOffset = (containerWidth - moduleWidth) / 2;
+            
+            // Calculate the new position
+            const newPosition = centerOffset - (currentIndex * (moduleWidth + gap));
+            
+            // Apply the transformation
+            if (animate) {
+                isTransitioning = true;
+                slider.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            } else {
+                slider.style.transition = 'none';
+            }
+            
+            slider.style.transform = `translateX(${newPosition}px)`;
+            
+            // Reset button states (no longer disabled for circular navigation)
+            prevBtn.disabled = false;
+            prevBtn.style.opacity = '1';
+            nextBtn.disabled = false;
+            nextBtn.style.opacity = '1';
+            
+            // Reset transition flag after animation completes
+            if (animate) {
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 600);
+            }
+        }
+        
+        // Initialize slider after a short delay to ensure all elements are loaded
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                updateSlider(false); // Initial position without animation
+            }, 200);
+        });
+        
+        // Event listeners for navigation buttons
+        prevBtn.addEventListener('click', () => {
+            if (isTransitioning) return;
+            
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = modules.length - 1;
+            }
+            updateSlider();
+            
+            // Reset auto slide timer
+            resetAutoSlideTimer();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (isTransitioning) return;
+            
+            currentIndex++;
+            if (currentIndex >= modules.length) {
+                currentIndex = 0;
+            }
+            updateSlider();
+            
+            // Reset auto slide timer
+            resetAutoSlideTimer();
+        });
+        
+        // Auto slide functionality
+        function startAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+            
+            autoSlideInterval = setInterval(() => {
+                if (isTransitioning) return;
+                
+                currentIndex++;
+                if (currentIndex >= modules.length) {
+                    currentIndex = 0;
+                }
+                updateSlider();
+            }, 5000); // 5 seconds
+        }
+        
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+        
+        function resetAutoSlideTimer() {
+            if (isAutoSlideEnabled) {
+                stopAutoSlide();
+                startAutoSlide();
+            }
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            updateSlider(false); // Update position without animation on resize
+        });
+        
+        // Initialize all animations
+        window.addEventListener('load', () => {
+            // Set initial slider position
+            setTimeout(() => {
+                updateSlider(false); // Initial position without animation
+            }, 200);
+            
+            // Start auto slide
+            startAutoSlide();
+            
+            // Trigger initial animations
+            document.querySelectorAll('.animate-fade-in, .animate-slide-up').forEach(element => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+
+</body></html>
